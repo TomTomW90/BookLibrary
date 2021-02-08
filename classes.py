@@ -1,36 +1,51 @@
 class Book:
 
-    def __init__(self, isbn: int, title: str, author_f_name: str, author_l_name: str, is_available=True):
-        self.__isbn = isbn
-        self._title = title
-        self._author_f_name = author_f_name
-        self._author_l_name = author_l_name
-        self._is_available = is_available
+    def __init__(self, isbn: int, title: str, author_name: str, is_available: bool = True):
+        self._isbn = self.validate_isbn(isbn)
+        self._title = self.validate_title(title)
+        self._author_name = self.validate_author(author_name)
+        self._is_available = self.validate_availability(is_available)
 
-    def __repr__(self) -> str:
-        return f"{self._title} / {self._author_f_name} {self._author_l_name}; ISBN: {self.__isbn}"
+    @staticmethod
+    def validate_isbn(isbn: int) -> int:
+        if not isinstance(isbn, int) or isbn == "":
+            raise ValueError("ISBN is wrong type or empty!")
+        return isbn
+
+    def validate_title(self, title: str) -> str:
+        if not isinstance(title, str) or title == "":
+            raise ValueError("Title is not a string or empty!")
+        return title
+
+    def validate_author(self, author_name: str) -> str:
+        if not isinstance(author_name, str) or author_name == "":
+            raise ValueError("Author is not a string or empty!")
+        return author_name
+
+    def validate_availability(self, is_available: bool) -> bool:
+        if not isinstance(is_available, bool):
+            raise ValueError("Availability status is not 'True' or 'False'")
+        return is_available
 
     def get_isbn(self) -> int:
-        return self.__isbn
+        return self._isbn
 
-    def get_title(self) -> str:
+    def use_title(self) -> str:
         return self._title
 
-    def edit_title(self, title: str) -> None:
-        self._title = title
+    def use_author(self) -> str:
+        return self._author_name
 
-    def edit_author(self, name: str, surname: str) -> None:
-        self._author_f_name = name
-        self._author_l_name = surname
-
-    def get_author(self) -> str:
-        return f'{self._author_l_name}, {self._author_f_name}'
-
-    def get_availability(self) -> bool:
+    @property
+    def manage_availability(self) -> bool:
         return self._is_available
 
-    def set_availability(self, status: bool) -> None:
-        self._is_available = status
+    @manage_availability.setter
+    def manage_availability(self, status: bool) -> None:
+        self._is_available = self.validate_availability(status)
+
+    def __repr__(self) -> str:
+        return f"{self._title} / {self._author_name} ; ISBN: {self._isbn}"
 
 
 class LibrarySystem:
@@ -38,54 +53,49 @@ class LibrarySystem:
     def __init__(self):
         self._books = {}
 
-    def create_book(self, book: Book) -> None:
+    def add_book_to_library(self, book: Book) -> None:
         self._books[book.get_isbn()] = book
 
     def rent(self, isbn: int) -> None:
-        self._books[isbn].set_availability(False)
+        self._books[isbn].manage_availability(False)
 
     def give_back(self, isbn: int) -> None:
-        self._books[isbn].set_availability(True)
+        self._books[isbn].manage_availability(True)
 
     def list_available_books(self) -> list:
-        available_books = [book for book in self._books.values() if book.get_availability() is True]
+        """Return list of Book class objects with parameter is_available==True."""
+
+        available_books = [book for book in self._books.values() if book.manage_availability]
         return available_books
 
     def search_by_isbn(self, isbn_num: int) -> Book:
-        for isbn, book in self._books.items():
-            if isbn == isbn_num:
-                return book
+        """Return Book class """
+        return self._books[isbn_num]
 
     def search_by_title(self, title_input: str) -> list:
-        titles_with_title_input = []
-        for book in self._books.values():
-            if title_input.lower() in book.get_title().lower():
-                titles_with_title_input.append(book)
-        return titles_with_title_input
+        books_list_with_title_input = [book.use_title() for book in self._books.values() if title_input.lower() == book.use_title().lower()]
+        return books_list_with_title_input
 
     def search_by_author(self, author_input: str) -> list:
-        titles_with_author_input = []
-        for book in self._books.values():
-            if author_input.lower() in book.get_author().lower():
-                titles_with_author_input.append(book)
-        return titles_with_author_input
+        books_list_with_author_input = [book.use_title() for book in self._books.values() if author_input.lower() == book.use_author().lower()]
+        return books_list_with_author_input
 
-    # Metoda opcjonalna. Jest alternatywą dla serach_by_title i serach_by_author
     def serach_by_keyword(self, keyword: str) -> list:
-        titles_with_keyword = []
+        books_with_keyword = []
         for book in self._books.values():
-            if (keyword.lower() in book.get_title().lower()) or (keyword.lower() in book.get_author().lower()):
-                titles_with_keyword.append(book)
-        return titles_with_keyword
+            if (keyword.lower() in book.use_title().lower()) or (keyword.lower() in book.use_author().lower()):
+                books_with_keyword.append(book)
+        return books_with_keyword
 
 
-legimi = LibrarySystem()
-legimi.create_book(Book(9788363014063, 'Zyciologia', 'Milosz', 'Brzezinski'))
-legimi.create_book(Book(8370540910, 'Czas pogardy', 'Andrzej', 'Sapkowski'))
-legimi.create_book(Book(8307012619, 'Swiadectwo poezji', 'Czeslaw', 'Milosz'))
+my_library = LibrarySystem()
+my_library.add_book_to_library(Book(9788363014063, 'Zyciologia', 'Milosz Brzezinski'))
+my_library.add_book_to_library(Book(8370540910, 'Czas pogardy', 'Andrzej Sapkowski'))
+my_library.add_book_to_library(Book(8307012619, 'Swiadectwo poezji', 'Czeslaw Milosz'))
 
-print("List all available:", legimi.list_available_books(), '\n')
-print("Search by ISNB:", legimi.search_by_isbn(8370540910), '\n')
-print("Search by title:", legimi.search_by_title("zyc"), '\n')
-print("Search by author:", legimi.search_by_author("milosz"), '\n')
-print("Search by keyword:", legimi.serach_by_keyword("milosz"), '\n')
+print()
+print("List all available:", my_library.list_available_books(), '\n')
+print("Search by ISNB:", my_library.search_by_isbn(8370540910), '\n')
+print("Search by title:", my_library.search_by_title("zyciologia"), '\n')
+print("Search by author:", my_library.search_by_author("czeslaw milosz"), '\n')
+print("Search by keyword:", my_library.serach_by_keyword("milosz"), '\n')

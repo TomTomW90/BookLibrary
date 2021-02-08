@@ -1,0 +1,4 @@
+venv/
+questions.py
+.idea/
+__pycache__/
