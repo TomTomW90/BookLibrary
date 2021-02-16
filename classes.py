@@ -30,10 +30,10 @@ class Book:
     def get_isbn(self) -> int:
         return self._isbn
 
-    def use_title(self) -> str:
+    def get_title(self) -> str:
         return self._title
 
-    def use_author(self) -> str:
+    def get_author_name(self) -> str:
         return self._author_name
 
     @property
@@ -73,16 +73,16 @@ class LibrarySystem:
         return self._books[isbn_num]
 
     def search_by_title(self, title_input: str) -> list:
-        books_list_with_title_input = [book.use_title() for book in self._books.values() if title_input.lower() == book.use_title().lower()]
+        books_list_with_title_input = [book.get_title() for book in self._books.values() if title_input.lower() == book.get_title().lower()]
         return books_list_with_title_input
 
     def search_by_author(self, author_input: str) -> list:
-        books_list_with_author_input = [book.use_title() for book in self._books.values() if author_input.lower() == book.use_author().lower()]
+        books_list_with_author_input = [book.get_title() for book in self._books.values() if author_input.lower() == book.get_author_name().lower()]
         return books_list_with_author_input
 
     def serach_by_keyword(self, keyword: str) -> list:
         books_with_keyword = []
         for book in self._books.values():
-            if (keyword.lower() in book.use_title().lower()) or (keyword.lower() in book.use_author().lower()):
+            if (keyword.lower() in book.get_title().lower()) or (keyword.lower() in book.get_author_name().lower()):
                 books_with_keyword.append(book)
         return books_with_keyword
