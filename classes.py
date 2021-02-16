@@ -3,8 +3,8 @@ class Book:
     def __init__(self, isbn: int, title: str, author_name: str, is_available: bool = True):
         self._isbn = self.validate_isbn(isbn)
         self._title = self.validate_title(title)
-        self._author_name = self.validate_author(author_name)
-        self._is_available = self.validate_availability(is_available)
+        self._author_name = self.validate_author_name(author_name)
+        self._is_available = self.validate_is_available(is_available)
 
     @staticmethod
     def validate_isbn(isbn: int) -> int:
@@ -17,14 +17,14 @@ class Book:
             raise ValueError("Title is not a string or empty!")
         return title
 
-    def validate_author(self, author_name: str) -> str:
+    def validate_author_name(self, author_name: str) -> str:
         if not isinstance(author_name, str) or author_name == "":
             raise ValueError("Author is not a string or empty!")
         return author_name
 
-    def validate_availability(self, is_available: bool) -> bool:
+    def validate_is_available(self, is_available: bool) -> bool:
         if not isinstance(is_available, bool):
-            raise ValueError("Availability status is not 'True' or 'False'")
+            raise ValueError("Availability status is not 'True' or 'False'!")
         return is_available
 
     def get_isbn(self) -> int:
@@ -42,7 +42,7 @@ class Book:
 
     @manage_availability.setter
     def manage_availability(self, status: bool) -> None:
-        self._is_available = self.validate_availability(status)
+        self._is_available = self.validate_is_available(status)
 
     def __repr__(self) -> str:
         return f"{self._title} / {self._author_name} ; ISBN: {self._isbn}"
@@ -86,16 +86,3 @@ class LibrarySystem:
             if (keyword.lower() in book.use_title().lower()) or (keyword.lower() in book.use_author().lower()):
                 books_with_keyword.append(book)
         return books_with_keyword
-
-
-my_library = LibrarySystem()
-my_library.add_book_to_library(Book(9788363014063, 'Zyciologia', 'Milosz Brzezinski'))
-my_library.add_book_to_library(Book(8370540910, 'Czas pogardy', 'Andrzej Sapkowski'))
-my_library.add_book_to_library(Book(8307012619, 'Swiadectwo poezji', 'Czeslaw Milosz'))
-
-print()
-print("List all available:", my_library.list_available_books(), '\n')
-print("Search by ISNB:", my_library.search_by_isbn(8370540910), '\n')
-print("Search by title:", my_library.search_by_title("zyciologia"), '\n')
-print("Search by author:", my_library.search_by_author("czeslaw milosz"), '\n')
-print("Search by keyword:", my_library.serach_by_keyword("milosz"), '\n')
