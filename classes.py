@@ -57,10 +57,10 @@ class LibrarySystem:
         self._books[book.get_isbn()] = book
 
     def rent(self, isbn: int) -> None:
-        self._books[isbn].manage_availability(False)
+        self._books[isbn].manage_availability = False
 
     def give_back(self, isbn: int) -> None:
-        self._books[isbn].manage_availability(True)
+        self._books[isbn].manage_availability = True
 
     def list_available_books(self) -> list:
         """Return list of Book class objects with parameter is_available==True."""
