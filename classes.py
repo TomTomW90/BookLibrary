@@ -53,18 +53,40 @@ class LibrarySystem:
     def __init__(self):
         self._books = {}
 
+    def list_all_isbns_in_the_library(self) -> list:
+        return list(self._books.keys())
+
     def add_book_to_library(self, book: Book) -> None:
         self._books[book.get_isbn()] = book
 
     def rent(self, isbn: int) -> None:
-        self._books[isbn].manage_availability = False
+        if isbn == "":
+            raise ValueError('ISBN argument is not given!')
+
+        elif not isinstance(isbn, int):
+            raise ValueError('Given ISBN is incorrect type!')
+
+        elif isbn not in self.list_all_isbns_in_the_library():
+            raise KeyError('Given ISBN does not exist in the library!')
+
+        else:
+            self._books[isbn].manage_availability = False
 
     def give_back(self, isbn: int) -> None:
-        self._books[isbn].manage_availability = True
+        if isbn == "":
+            raise ValueError('ISBN argument is not given!')
+
+        elif not isinstance(isbn, int):
+            raise ValueError('Given ISBN is incorrect type!')
+
+        elif isbn not in self.list_all_isbns_in_the_library():
+            raise KeyError('Given ISBN does not exist in the library!')
+
+        else:
+            self._books[isbn].manage_availability = True
 
     def list_available_books(self) -> list:
         """Return list of Book class objects with parameter is_available==True."""
-
         available_books = [book for book in self._books.values() if book.manage_availability]
         return available_books
 
@@ -73,11 +95,13 @@ class LibrarySystem:
         return self._books[isbn_num]
 
     def search_by_title(self, title_input: str) -> list:
-        books_list_with_title_input = [book.get_title() for book in self._books.values() if title_input.lower() == book.get_title().lower()]
+        books_list_with_title_input = [book.get_title() for book in self._books.values() if
+                                       title_input.lower() == book.get_title().lower()]
         return books_list_with_title_input
 
     def search_by_author(self, author_input: str) -> list:
-        books_list_with_author_input = [book.get_title() for book in self._books.values() if author_input.lower() == book.get_author_name().lower()]
+        books_list_with_author_input = [book.get_title() for book in self._books.values() if
+                                        author_input.lower() == book.get_author_name().lower()]
         return books_list_with_author_input
 
     def serach_by_keyword(self, keyword: str) -> list:
