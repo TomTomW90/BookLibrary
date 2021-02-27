@@ -1,3 +1,6 @@
+from library_exceptions import EmptyLibraryError, NoAvailBook
+
+
 class Book:
 
     def __init__(self, isbn: int, title: str, author_name: str, is_available: bool = True):
@@ -12,17 +15,20 @@ class Book:
             raise ValueError("ISBN is wrong type or empty!")
         return isbn
 
-    def validate_title(self, title: str) -> str:
+    @staticmethod
+    def validate_title(title: str) -> str:
         if not isinstance(title, str) or title == "":
             raise ValueError("Title is not a string or empty!")
         return title
 
-    def validate_author_name(self, author_name: str) -> str:
+    @staticmethod
+    def validate_author_name(author_name: str) -> str:
         if not isinstance(author_name, str) or author_name == "":
             raise ValueError("Author is not a string or empty!")
         return author_name
 
-    def validate_is_available(self, is_available: bool) -> bool:
+    @staticmethod
+    def validate_is_available(is_available: bool) -> bool:
         if not isinstance(is_available, bool):
             raise ValueError("Availability status is not 'True' or 'False'!")
         return is_available
@@ -86,12 +92,18 @@ class LibrarySystem:
             self._books[isbn].manage_availability = True
 
     def list_available_books(self) -> list:
-        """Return list of Book class objects with parameter is_available==True."""
+        if not self._books:
+            raise EmptyLibraryError
+
         available_books = [book for book in self._books.values() if book.manage_availability]
+
+        if not available_books:
+            raise NoAvailBook
+
         return available_books
 
     def search_by_isbn(self, isbn_num: int) -> Book:
-        """Return Book class """
+        isbn_num = Book.validate_isbn(isbn_num)
         return self._books[isbn_num]
 
     def search_by_title(self, title_input: str) -> list:

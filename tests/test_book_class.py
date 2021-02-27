@@ -139,7 +139,7 @@ class BookTestCase(unittest.TestCase):
         book.manage_availability = False
         self.assertEqual(book.manage_availability, False)
 
-    def test_if_method_repr__returns_correct_value(self):
+    def test_if_method_repr_returns_correct_value(self):
         book = Book(**self.book_atributes)
         repr_value = f"{self.book_atributes['title']} / {self.book_atributes['author_name']} ; ISBN: {self.book_atributes['isbn']}"
         self.assertEqual(str(book), repr_value)
