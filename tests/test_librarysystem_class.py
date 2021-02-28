@@ -1,6 +1,6 @@
 import unittest
 from classes import LibrarySystem, Book
-from library_exceptions import EmptyLibraryError, NoAvailBook
+from library_exceptions import EmptyLibraryError, NoAvailBook, NoBookFound
 
 
 class LibrarySystemTestCase(unittest.TestCase):
@@ -19,7 +19,7 @@ class LibrarySystemTestCase(unittest.TestCase):
         self.book3_atributes = {
             'isbn': 8307012619,
             'title': 'Świadectwo poezji',
-            'author_name': 'Miłosz Czesław',
+            'author_name': 'Milosz Czesław',
             'is_available': True,
             }
 
@@ -176,6 +176,118 @@ class LibrarySystemTestCase(unittest.TestCase):
         self.library.add_book_to_library(book1)
 
         self.assertIsInstance(self.library.search_by_isbn(123), Book)
+
+    def test_method_serach_by_isbn_when_isbn_does_not_exist(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        self.assertEqual(self.library.search_by_isbn(123), 'Given ISBN does not exist.')
+
+    def test_if_method_search_by_title_returns_list(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        self.assertIsInstance(self.library.search_by_title('Zyciologia'), list)
+
+    def test_method_search_by_title_when_non_str_given(self):
+        with self.assertRaises(ValueError):
+            self.library.search_by_title(123)
+
+    def test_method_search_by_title_when_empty_str_given(self):
+        with self.assertRaises(ValueError):
+            self.library.search_by_title('')
+
+    def test_if_method_search_by_title_returns_list_with_book_type_obj(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+        tested_object = self.library.search_by_title('Zyciologia')[0]
+
+        self.assertIsInstance(tested_object, Book)
+
+    def test_method_search_by_title_when_no_book_was_found(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        with self.assertRaises(NoBookFound):
+            self.library.search_by_title('Zycio')
+
+    def test_if_method_search_by_author_returns_list(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        self.assertIsInstance(self.library.search_by_author('Milosz Brzezinski'), list)
+
+    def test_method_search_by_author_when_non_str_given(self):
+        with self.assertRaises(ValueError):
+            self.library.search_by_author(123)
+
+    def test_method_search_by_author_when_empty_str_given(self):
+        with self.assertRaises(ValueError):
+            self.library.search_by_author('')
+
+    def test_if_method_search_by_author_returns_list_with_book_type_obj(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+        tested_object = self.library.search_by_author('Milosz Brzezinski')[0]
+
+        self.assertIsInstance(tested_object, Book)
+
+    def test_method_search_by_author_when_no_book_was_found(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        with self.assertRaises(NoBookFound):
+            self.library.search_by_author('Milosz')
+
+    def test_if_method_search_by_keword_returns_list(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        self.assertIsInstance(self.library.search_by_keyword('Milosz Brzezinski'), list)
+
+    def test_method_search_by_keyword_when_non_str_given(self):
+        with self.assertRaises(ValueError):
+            self.library.search_by_keyword(123)
+
+    def test_method_search_by_keyword_when_empty_str_given(self):
+        with self.assertRaises(ValueError):
+            self.library.search_by_keyword('')
+
+    def test_if_method_search_by_keyword_returns_list_with_book_type_obj(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+        tested_object = self.library.search_by_keyword('Milosz Brzezinski')[0]
+
+        self.assertIsInstance(tested_object, Book)
+
+    def test_method_search_by_keyword_when_no_book_was_found(self):
+
+        book1 = Book(**self.book1_atributes)
+        self.library.add_book_to_library(book1)
+
+        with self.assertRaises(NoBookFound):
+            self.library.search_by_keyword('0')
+
+    def test_if_method_search_by_keyword_returns_all_books_that_match_the_keyword(self):
+
+        book1 = Book(**self.book1_atributes)
+        book2 = Book(**self.book2_atributes)
+        book3 = Book(**self.book3_atributes)
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        self.library.add_book_to_library(book3)
+        tested_result = [book1, book3]
+
+        self.assertEqual(self.library.search_by_keyword('milosz'), tested_result)
 
 
 if __name__ == '__main__':

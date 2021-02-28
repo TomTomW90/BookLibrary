@@ -8,3 +8,9 @@ class NoAvailBook(Exception):
     def __init__(self):
         message = 'All books are unavailable.'
         super().__init__(message)
+
+
+class NoBookFound(Exception):
+    def __init__(self):
+        message = 'There is no book matching given search criteria.'
+        super().__init__(message)

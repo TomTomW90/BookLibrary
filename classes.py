@@ -1,4 +1,4 @@
-from library_exceptions import EmptyLibraryError, NoAvailBook
+from library_exceptions import EmptyLibraryError, NoAvailBook, NoBookFound
 
 
 class Book:
@@ -55,7 +55,7 @@ class Book:
 
 
 class LibrarySystem:
-
+    # do metod wyszukujących dodaj funkcjonalność gdzie poprzez dodanie parametru true/false wyszukujesz dostępne lub wszystkie ksiazki
     def __init__(self):
         self._books = {}
 
@@ -103,22 +103,43 @@ class LibrarySystem:
         return available_books
 
     def search_by_isbn(self, isbn_num: int) -> Book:
-        isbn_num = Book.validate_isbn(isbn_num)
-        return self._books[isbn_num]
+        try:
+            isbn_num = Book.validate_isbn(isbn_num)
+            return self._books[isbn_num]
+        except KeyError:
+            return 'Given ISBN does not exist.'
 
     def search_by_title(self, title_input: str) -> list:
-        books_list_with_title_input = [book.get_title() for book in self._books.values() if
+        title_input = Book.validate_title(title_input)
+        books_list_with_title_input = [book for book in self._books.values() if
                                        title_input.lower() == book.get_title().lower()]
+
+        if not books_list_with_title_input:
+            raise NoBookFound
+
         return books_list_with_title_input
 
     def search_by_author(self, author_input: str) -> list:
-        books_list_with_author_input = [book.get_title() for book in self._books.values() if
+        author_input = Book.validate_author_name(author_input)
+        books_list_with_author_input = [book for book in self._books.values() if
                                         author_input.lower() == book.get_author_name().lower()]
+
+        if not books_list_with_author_input:
+            raise NoBookFound
+
         return books_list_with_author_input
 
-    def serach_by_keyword(self, keyword: str) -> list:
+    def search_by_keyword(self, keyword: str) -> list:
+
+        if not isinstance(keyword, str) or keyword == '':
+            raise ValueError("The keyword is not a string or is empty!")
+
         books_with_keyword = []
         for book in self._books.values():
             if (keyword.lower() in book.get_title().lower()) or (keyword.lower() in book.get_author_name().lower()):
                 books_with_keyword.append(book)
+
+        if not books_with_keyword:
+            raise NoBookFound
+
         return books_with_keyword
