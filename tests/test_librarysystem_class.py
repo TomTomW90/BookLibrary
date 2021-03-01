@@ -215,6 +215,28 @@ class LibrarySystemTestCase(unittest.TestCase):
         with self.assertRaises(NoBookFound):
             self.library.search_by_title('Zycio')
 
+    def test_method_search_by_title_when_available_only_is_true(self):
+
+        book1 = Book(**self.book1_atributes)
+        book2 = Book(**self.book2_atributes)
+        book1._title, book2._title = 'test_title', 'test_title'
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        test_case_list_of_books = [book1]
+
+        self.assertEqual(self.library.search_by_title('test_title', True), test_case_list_of_books)
+
+    def test_method_search_by_title_when_available_only_is_false(self):
+
+        book1 = Book(**self.book1_atributes)
+        book2 = Book(**self.book2_atributes)
+        book1._title, book2._title = 'test_title', 'test_title'
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        test_case_list_of_books = [book1, book2]
+
+        self.assertEqual(self.library.search_by_title('test_title', False), test_case_list_of_books)
+
     def test_if_method_search_by_author_returns_list(self):
 
         book1 = Book(**self.book1_atributes)
@@ -245,6 +267,28 @@ class LibrarySystemTestCase(unittest.TestCase):
 
         with self.assertRaises(NoBookFound):
             self.library.search_by_author('Milosz')
+
+    def test_method_search_by_author_when_available_only_is_true(self):
+
+        book1 = Book(**self.book1_atributes)
+        book2 = Book(**self.book2_atributes)
+        book1._author_name, book2._author_name = 'test_author', 'test_author'
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        test_case_list_of_books = [book1]
+
+        self.assertEqual(self.library.search_by_author('test_author', True), test_case_list_of_books)
+
+    def test_method_search_by_author_when_available_only_is_false(self):
+
+        book1 = Book(**self.book1_atributes)
+        book2 = Book(**self.book2_atributes)
+        book1._author_name, book2._author_name = 'test_author', 'test_author'
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        test_case_list_of_books = [book1, book2]
+
+        self.assertEqual(self.library.search_by_author('test_author', False), test_case_list_of_books)
 
     def test_if_method_search_by_keword_returns_list(self):
 
@@ -288,6 +332,31 @@ class LibrarySystemTestCase(unittest.TestCase):
         tested_result = [book1, book3]
 
         self.assertEqual(self.library.search_by_keyword('milosz'), tested_result)
+
+    def test_method_search_by_keyword_when_available_only_is_true(self):
+
+        book1 = Book(**self.book1_atributes)
+        book1.manage_availability = False
+        book2 = Book(**self.book2_atributes)
+        book3 = Book(**self.book3_atributes)
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        self.library.add_book_to_library(book3)
+        test_case_list_of_books = [book3]
+
+        self.assertEqual(self.library.search_by_keyword('milosz', True), test_case_list_of_books)
+
+    def test_method_search_by_author_when_available_only_is_false(self):
+
+        book1 = Book(**self.book1_atributes)
+        book2 = Book(**self.book2_atributes)
+        book3 = Book(**self.book3_atributes)
+        self.library.add_book_to_library(book1)
+        self.library.add_book_to_library(book2)
+        self.library.add_book_to_library(book3)
+        test_case_list_of_books = [book1, book3]
+
+        self.assertEqual(self.library.search_by_keyword('milosz', False), test_case_list_of_books)
 
 
 if __name__ == '__main__':

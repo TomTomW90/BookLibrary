@@ -55,7 +55,7 @@ class Book:
 
 
 class LibrarySystem:
-    # do metod wyszukujących dodaj funkcjonalność gdzie poprzez dodanie parametru true/false wyszukujesz dostępne lub wszystkie ksiazki
+
     def __init__(self):
         self._books = {}
 
@@ -109,28 +109,31 @@ class LibrarySystem:
         except KeyError:
             return 'Given ISBN does not exist.'
 
-    def search_by_title(self, title_input: str) -> list:
+    def search_by_title(self, title_input: str, available_only: bool = True) -> list:
         title_input = Book.validate_title(title_input)
         books_list_with_title_input = [book for book in self._books.values() if
                                        title_input.lower() == book.get_title().lower()]
+        if available_only:
+            books_list_with_title_input = [book for book in books_list_with_title_input if book.manage_availability]
 
         if not books_list_with_title_input:
             raise NoBookFound
 
         return books_list_with_title_input
 
-    def search_by_author(self, author_input: str) -> list:
+    def search_by_author(self, author_input: str, available_only: bool = True) -> list:
         author_input = Book.validate_author_name(author_input)
         books_list_with_author_input = [book for book in self._books.values() if
                                         author_input.lower() == book.get_author_name().lower()]
+        if available_only:
+            books_list_with_author_input = [book for book in books_list_with_author_input if book.manage_availability]
 
         if not books_list_with_author_input:
             raise NoBookFound
 
         return books_list_with_author_input
 
-    def search_by_keyword(self, keyword: str) -> list:
-
+    def search_by_keyword(self, keyword: str, available_only: bool = True) -> list:
         if not isinstance(keyword, str) or keyword == '':
             raise ValueError("The keyword is not a string or is empty!")
 
@@ -138,6 +141,8 @@ class LibrarySystem:
         for book in self._books.values():
             if (keyword.lower() in book.get_title().lower()) or (keyword.lower() in book.get_author_name().lower()):
                 books_with_keyword.append(book)
+        if available_only:
+            books_with_keyword = [book for book in books_with_keyword if book.manage_availability]
 
         if not books_with_keyword:
             raise NoBookFound
