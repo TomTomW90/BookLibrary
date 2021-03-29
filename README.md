@@ -16,3 +16,6 @@ Context manager, Serialisation:
   
 Datetime:
   -used to manage periods of availability/unavailability of books
+
+Abstractclass:
+  -User abstractclass for other users' classes
