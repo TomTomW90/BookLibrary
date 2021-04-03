@@ -50,8 +50,11 @@ class Book:
     def manage_availability(self, status: bool) -> None:
         self._is_available = self.validate_is_available(status)
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f"{self._title} / {self._author_name} ; ISBN: {self._isbn}"
+
+    def __repr__(self):
+        return f'Book(isbn={self._isbn}, title={self._title}, author_name={self._author_name}, is_available={self._is_available})'
 
 
 class LibrarySystem:
