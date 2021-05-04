@@ -30,6 +30,6 @@ class Student(UserTemplate):
 
     @staticmethod
     def validate_id(pesel: int) -> int:
-        if not isinstance(pesel, int) or match(r'\d{11}', pesel):
+        if not isinstance(pesel, int) or not match(r'\d{11}', str(pesel)):
             raise ValueError("Given PESEL is wrong type or incorrect!")
         return pesel

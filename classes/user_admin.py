@@ -1,9 +1,9 @@
 from classes.user_template import UserTemplate
 
 
-class Librarian(UserTemplate):
+class Admin(UserTemplate):
 
-    _user_type = "Librarian"
+    _user_type = "Admin"
 
     def __init__(self):
         super().__init__()

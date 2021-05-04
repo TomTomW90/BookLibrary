@@ -1,6 +1,6 @@
 import unittest
 from classes import LibrarySystem, Book
-from classes.library_exceptions import EmptyLibraryError, NoAvailBook, NoBookFound
+from classes.lib_exceptions import EmptyLibraryError, NoAvailBook, NoBookFound
 
 
 class LibrarySystemTestCase(unittest.TestCase):

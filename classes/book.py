@@ -1,3 +1,4 @@
+
 class Book:
 
     def __init__(self, isbn: int, title: str, author_name: str, is_available: bool = True):
@@ -5,6 +6,12 @@ class Book:
         self._title = self.validate_title(title)
         self._author_name = self.validate_author_name(author_name)
         self._is_available = self.validate_is_available(is_available)
+
+    def __str__(self) -> str:
+        return f"{self._title} / {self._author_name} ; ISBN: {self._isbn}"
+
+    def __repr__(self):
+        return f'Book(isbn={self._isbn}, title={self._title}, author_name={self._author_name}, is_available={self._is_available})'
 
     @staticmethod
     def validate_isbn(isbn: int) -> int:
@@ -46,9 +53,3 @@ class Book:
     @manage_availability.setter
     def manage_availability(self, status: bool) -> None:
         self._is_available = self.validate_is_available(status)
-
-    def __str__(self) -> str:
-        return f"{self._title} / {self._author_name} ; ISBN: {self._isbn}"
-
-    def __repr__(self):
-        return f'Book(isbn={self._isbn}, title={self._title}, author_name={self._author_name}, is_available={self._is_available})'

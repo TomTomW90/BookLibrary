@@ -1,6 +1,5 @@
 from re import match
 from abc import ABC, abstractmethod
-from typing import Optional
 
 
 class UserTemplate(ABC):
@@ -11,12 +10,19 @@ class UserTemplate(ABC):
         self._user_id = ""
         self._user_first_name = ""
         self._user_last_name = ""
-        self._user_login = ""
+        self._user_login_name = ""
+
+    def __str__(self):
+        return f'{self._user_type} with ID: {self._user_id}'
+
+    def __repr__(self):
+        return f'{self._user_type}(_user_id={self._user_id}, _user_first_name={self._user_first_name}, ' \
+               f'_user_last_name={self._user_last_name}, _user_login_name={self._user_login_name}'
 
     @abstractmethod
     @property
-    def user_id(self) -> Optional[str, int]:
-        return self._user_id
+    def user_id(self):
+        pass
 
     @abstractmethod
     @user_id.setter
@@ -48,11 +54,11 @@ class UserTemplate(ABC):
 
     @property
     def user_login(self) -> str:
-        return self._user_login
+        return self._user_login_name
 
     @user_login.setter
     def user_login(self, given_login) -> None:
-        self.user_login = self.validate_login(given_login)
+        self._user_login_name = self.validate_login(given_login)
 
     @staticmethod
     def validate_login(given_email: str) -> str:
