@@ -2,7 +2,7 @@ from re import match
 from abc import ABC, abstractmethod
 
 
-class UserTemplate(ABC):
+class User(ABC):
 
     _user_type = "User"
 
@@ -19,13 +19,13 @@ class UserTemplate(ABC):
         return f'{self._user_type}(_user_id={self._user_id}, _user_first_name={self._user_first_name}, ' \
                f'_user_last_name={self._user_last_name}, _user_login_name={self._user_login_name}'
 
-    @abstractmethod
     @property
+    @abstractmethod
     def user_id(self):
         pass
 
-    @abstractmethod
     @user_id.setter
+    @abstractmethod
     def user_id(self, value) -> None:
         pass
 

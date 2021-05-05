@@ -1,13 +1,14 @@
-from UI_employee import UIEmplyee
+from classes.UI_employee import UIEmployee
+from classes.UM_editor import UMEditor
 
 
-class UILibrarian(UIEmplyee):
+class UILibrarian(UIEmployee):
 
-    def add_user(self):  # add_user interface class should be added
-        pass
+    def edit_user(self, student_to_edit_id: int) -> None:
+        return UMEditor(student_to_edit_id)
 
-    def edit_user(self):
-        pass
-
-    def remove_user(self):
-        pass
+    def remove_user(self, student_to_remove_id: int) -> None:
+        try:
+            del self._lib.students[student_to_remove_id]
+        except KeyError as ke:
+            print(f'Student ID not found:{ke.args}')

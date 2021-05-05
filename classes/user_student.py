@@ -1,8 +1,8 @@
 from re import match
-from classes.user_template import UserTemplate
+from classes.user import User
 
 
-class Student(UserTemplate):
+class Student(User):
 
     _user_type = "Student"
 

@@ -13,6 +13,7 @@ class LibraryData:
         self._students = {}
         self._librarians = {}
         self._admins = {}
+        self._users = {}
 
     @property
     def books(self) -> Dict[int, Book]:

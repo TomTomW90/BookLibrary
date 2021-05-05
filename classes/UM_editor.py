@@ -1,15 +1,12 @@
-from classes.lib_data import LibraryData
 from classes.user_student import Student
 
 
-class UMCreator:
+class UMEditor:
 
-    def __init__(self, lib: LibraryData):
-        self._lib = lib
-        self._selected_student = None
+    def __init__(self, user_to_edit_id):
+        self._user_to_edit_id = user_to_edit_id
+        self._selected_user = None
 
+    def edit_users_first_name(self, new_first_name: str):
+        pass
 
-
-    def select_student(self, students_id: int) -> None:
-        Student.validate_id(students_id)
-        modified_student = self._lib.students[students_id]
