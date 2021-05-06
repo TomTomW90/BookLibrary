@@ -8,6 +8,10 @@ class UIBasic:
     def __init__(self, lib: LibraryData):
         self._lib = lib
 
+    # @property
+    # def lib(self) -> LibraryData:
+    #     return self._lib
+
     def list_all_isbns_in_the_library(self) -> list:
         return list(self._lib.books.keys())
 

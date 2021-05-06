@@ -10,23 +10,21 @@ class LibraryData:
 
     def __init__(self):
         self._books = {}
-        self._students = {}
-        self._librarians = {}
-        self._admins = {}
         self._users = {}
+        self._user_types = {
+            'Admin': Admin,
+            'Librarian': Librarian,
+            'Student': Student,
+        }
 
     @property
     def books(self) -> Dict[int, Book]:
         return self._books
 
     @property
-    def students(self) -> Dict[int, Student]:
-        return self._students
+    def users(self) -> dict:
+        return self._users
 
     @property
-    def librarians(self) -> Dict[str, Librarian]:
-        return self._librarians
-
-    @property
-    def admins(self) -> Dict[str, Admin]:
-        return self._librarians
+    def users_types(self) -> list:
+        return self._user_types
