@@ -125,16 +125,19 @@ class UserDirector:
     def builder(self, builder: UserBuilder) -> None:
         self._builder = builder
 
-    def create_new_employee(self, first_name: str, last_name: str, login: str):
-        self.builder.add_firs_name(first_name)
-        self.builder.add_last_name(last_name)
-        self.builder.add_login(login)
-        self.builder.add_id()
-        return self.builder.confirm_new_user
-
     def create_new_student(self, first_name: str, last_name: str, login: str, pesel: int):
         self.builder.add_firs_name(first_name)
         self.builder.add_last_name(last_name)
         self.builder.add_login(login)
         self.builder.add_id(pesel)
+        return self.builder.confirm_new_user
+
+
+class UserDirectorForAdmin(UserDirector):
+
+    def create_new_employee(self, first_name: str, last_name: str, login: str):
+        self.builder.add_firs_name(first_name)
+        self.builder.add_last_name(last_name)
+        self.builder.add_login(login)
+        self.builder.add_id()
         return self.builder.confirm_new_user

@@ -1,15 +1,23 @@
 from classes.UI_employee import UIEmployee
-from classes.UM_Builder import UMCreator
+from classes.UM_Builder import UserDirectorForAdmin, AdminBuilder, LibrarianBuilder
 
 
 class UIAdmin(UIEmployee):
 
-    def add_user(self, user_type: str) -> None:
-        user_type = self._lib.users_types[user_type]
-        new_user = UMCreator(user_type)
+    def add_admin_user(self, first_name: str, last_name: str, login: str):
+        director = UserDirectorForAdmin()
+        director.builder = AdminBuilder()
+        new_admin = director.create_new_employee(first_name, last_name, login)
+        self.lib.users[new_admin.user_id] = new_admin
 
-    def edit_user(self, user_to_edit_id) -> None:
-        pass
+    def add_librarian_user(self, first_name: str, last_name: str, login: str):
+        director = UserDirectorForAdmin()
+        director.builder = LibrarianBuilder()
+        new_librarian = director.create_new_employee(first_name, last_name, login)
+        self.lib.users[new_librarian.user_id] = new_librarian
 
-    def remove_user(self, user_to_remove_id) -> None:
-        pass
+    def remove_user(self, user_id) -> None:
+        try:
+            del self.lib.users[user_id]
+        except KeyError:
+            print(f'Given ID {user_id} not found.')
