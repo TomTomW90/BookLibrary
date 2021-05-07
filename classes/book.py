@@ -76,12 +76,12 @@ class Book:
         return copy(self)
 
 
-class BookPrototype:
+class BookCreator:
     _prototype = Book(123456, 'Prototype_of_book', 'Developer', True)
 
     @staticmethod
-    def create_new_book(isbn: int, title: str, author: str):
-        books_clone = BookPrototype._prototype.create_clone()
+    def create_new_book(isbn: int, title: str, author: str) -> Book:
+        books_clone = BookCreator._prototype.create_clone()
         books_clone.manage_isbn = isbn
         books_clone.manage_title = title
         books_clone.manage_author_name = author
