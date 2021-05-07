@@ -1,4 +1,7 @@
 
+from copy import copy
+
+
 class Book:
 
     def __init__(self, isbn: int, title: str, author_name: str, is_available: bool = True):
@@ -37,14 +40,29 @@ class Book:
             raise ValueError("Availability status is not 'True' or 'False'!")
         return is_available
 
-    def get_isbn(self) -> int:
+    @property
+    def manage_isbn(self) -> int:
         return self._isbn
 
-    def get_title(self) -> str:
+    @manage_isbn.setter
+    def manage_isbn(self, isbn: int) -> None:
+        self._isbn = self.validate_isbn(isbn)
+
+    @property
+    def manage_title(self) -> str:
         return self._title
 
-    def get_author_name(self) -> str:
+    @manage_title.setter
+    def manage_title(self, title: int) -> None:
+        self._title = self.validate_title(title)
+
+    @property
+    def manage_author_name(self) -> str:
         return self._author_name
+
+    @manage_author_name.setter
+    def manage_author_name(self, author_name: int) -> None:
+        self._author_name = self.validate_author_name(author_name)
 
     @property
     def manage_availability(self) -> bool:
@@ -53,3 +71,18 @@ class Book:
     @manage_availability.setter
     def manage_availability(self, status: bool) -> None:
         self._is_available = self.validate_is_available(status)
+
+    def create_clone(self):
+        return copy(self)
+
+
+class BookPrototype:
+    _prototype = Book(123456, 'Prototype_of_book', 'Developer', True)
+
+    @staticmethod
+    def create_new_book(isbn: int, title: str, author: str):
+        books_clone = BookPrototype._prototype.create_clone()
+        books_clone.manage_isbn = isbn
+        books_clone.manage_title = title
+        books_clone.manage_author_name = author
+        return books_clone

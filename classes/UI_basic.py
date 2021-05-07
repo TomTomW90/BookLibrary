@@ -56,7 +56,7 @@ class UIBasic:
     def search_by_title(self, title_input: str, available_only: bool = True) -> list:
         title_input = Book.validate_title(title_input)
         books_list_with_title_input = [book for book in self.lib.books.values() if
-                                       title_input.lower() == book.get_title().lower()]
+                                       title_input.lower() == book.manage_title.lower()]
 
         if available_only:
             books_list_with_title_input = [book for book in books_list_with_title_input if book.manage_availability]
@@ -69,7 +69,7 @@ class UIBasic:
     def search_by_author(self, author_input: str, available_only: bool = True) -> list:
         author_input = Book.validate_author_name(author_input)
         books_list_with_author_input = [book for book in self.lib.books.values() if
-                                        author_input.lower() == book.get_author_name().lower()]
+                                        author_input.lower() == book.manage_author_name.lower()]
 
         if available_only:
             books_list_with_author_input = [book for book in books_list_with_author_input if book.manage_availability]
@@ -85,7 +85,7 @@ class UIBasic:
 
         books_with_keyword = []
         for book in self.lib.books.values():
-            if (keyword.lower() in book.get_title().lower()) or (keyword.lower() in book.get_author_name().lower()):
+            if (keyword.lower() in book.manage_title.lower()) or (keyword.lower() in book.manage_author_name.lower()):
                 books_with_keyword.append(book)
         if available_only:
             books_with_keyword = [book for book in books_with_keyword if book.manage_availability]

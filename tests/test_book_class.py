@@ -121,15 +121,15 @@ class BookTestCase(unittest.TestCase):
 
     def test_if_method_get_isbn_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.get_isbn(), self.book_atributes['isbn'])
+        self.assertEqual(book.manage_isbn(), self.book_atributes['isbn'])
 
     def test_if_method_get_title_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.get_title(), self.book_atributes['title'])
+        self.assertEqual(book.manage_title(), self.book_atributes['title'])
 
     def test_if_method_get_author_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.get_author_name(), self.book_atributes['author_name'])
+        self.assertEqual(book.manage_author_name(), self.book_atributes['author_name'])
 
     def test_if_method_manage_availability_returns_correct_value(self):
         book = Book(**self.book_atributes)
