@@ -1,4 +1,3 @@
-
 from copy import copy
 
 
@@ -53,7 +52,7 @@ class Book:
         return self._title
 
     @manage_title.setter
-    def manage_title(self, title: int) -> None:
+    def manage_title(self, title: str) -> None:
         self._title = self.validate_title(title)
 
     @property
@@ -61,7 +60,7 @@ class Book:
         return self._author_name
 
     @manage_author_name.setter
-    def manage_author_name(self, author_name: int) -> None:
+    def manage_author_name(self, author_name: str) -> None:
         self._author_name = self.validate_author_name(author_name)
 
     @property
@@ -80,9 +79,9 @@ class BookCreator:
     _prototype = Book(123456, 'Prototype_of_book', 'Developer', True)
 
     @staticmethod
-    def create_new_book(isbn: int, title: str, author: str) -> Book:
+    def create_new_book(isbn: int, title: str, author_name: str) -> Book:
         books_clone = BookCreator._prototype.create_clone()
         books_clone.manage_isbn = isbn
         books_clone.manage_title = title
-        books_clone.manage_author_name = author
+        books_clone.manage_author_name = author_name
         return books_clone

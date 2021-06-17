@@ -1,6 +1,6 @@
 import unittest
 
-from classes.book import Book
+from classes.book import Book, BookCreator
 
 
 class BookTestCase(unittest.TestCase):
@@ -27,11 +27,11 @@ class BookTestCase(unittest.TestCase):
     def test_if_attr_is_available_name_is_correct(self):
         book = Book(**self.book_atributes)
         book._is_available = False
-        self.assertEqual(book._is_available, False)
+        self.assertFalse(book._is_available)
 
     def test_if_attr_is_available_is_true_by_default(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book._is_available, True)
+        self.assertTrue(book._is_available)
 
     def test_attr_isbn_when_int_is_given(self):
         book = Book(**self.book_atributes)
@@ -119,31 +119,82 @@ class BookTestCase(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "^Availability status is not 'True' or 'False'!$"):
             Book(**self.book_atributes)
 
-    def test_if_method_get_isbn_returns_correct_value(self):
+    def test_if_method_manage_isbn_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.manage_isbn(), self.book_atributes['isbn'])
+        self.assertEqual(book.manage_isbn, self.book_atributes['isbn'])
 
-    def test_if_method_get_title_returns_correct_value(self):
+    def test_if_method_manage_title_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.manage_title(), self.book_atributes['title'])
+        self.assertEqual(book.manage_title, self.book_atributes['title'])
 
-    def test_if_method_get_author_returns_correct_value(self):
+    def test_if_method_manage_author_name_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.manage_author_name(), self.book_atributes['author_name'])
+        self.assertEqual(book.manage_author_name, self.book_atributes['author_name'])
 
     def test_if_method_manage_availability_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        self.assertEqual(book.manage_availability, True)
+        book.manage_availability = True
+        self.assertTrue(book.manage_availability)
+
+    def test_if_method_manage_isbn_modifies_value(self):
+        book = Book(**self.book_atributes)
+        book.manage_isbn = 123456
+        self.assertEqual(book.manage_isbn, 123456)
+
+    def test_if_method_manage_title_modifies_value(self):
+        book = Book(**self.book_atributes)
+        book.manage_title = "Abcadło"
+        self.assertEqual(book.manage_title, "Abcadło")
+
+    def test_if_method_manage_author_name_modifies_value(self):
+        book = Book(**self.book_atributes)
+        book.manage_author_name = "ALa Kotarska"
+        self.assertEqual(book.manage_author_name, "ALa Kotarska")
 
     def test_if_method_manage_availability_modifies_value(self):
         book = Book(**self.book_atributes)
         book.manage_availability = False
-        self.assertEqual(book.manage_availability, False)
+        self.assertFalse(book.manage_availability)
 
     def test_if_method_repr_returns_correct_value(self):
         book = Book(**self.book_atributes)
-        repr_value = f"{self.book_atributes['title']} / {self.book_atributes['author_name']} ; ISBN: {self.book_atributes['isbn']}"
-        self.assertEqual(str(book), repr_value)
+        repr_value = f"Book(isbn={book.manage_isbn}, title={book.manage_title}, author_name={book.manage_author_name}, is_available={book.manage_availability})"
+        self.assertEqual(repr(book), repr_value)
+
+    def test_if_method_str_returns_correct_value(self):
+        book = Book(**self.book_atributes)
+        str_value = f"{book.manage_title} / {book.manage_author_name} ; ISBN: {book.manage_isbn}"
+        self.assertEqual(str(book), str_value)
+
+    def test_if_method_create_clone_creates_obj_with_same_type(self):
+        book = Book(**self.book_atributes)
+        book_clone = book.create_clone()
+        self.assertEqual(type(book), type(book_clone))
+
+
+class BookCreatorTestCase(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.book_atributes = {
+            'isbn': 9788363014063,
+            'title': 'Zyciologia',
+            'author_name': 'Milosz Brzezinski',
+            }
+        self.book_creator = BookCreator()
+
+    def test_if_attr_prototype_is_book_type(self):
+        self.assertIsInstance(self.book_creator._prototype, Book)
+
+    def test_if_method_create_new_book_returns_book_type(self):
+        new_book = self.book_creator.create_new_book(**self.book_atributes)
+        self.assertIsInstance(new_book, Book)
+
+    def test_if_method_create_new_book_sets_correct_attributes(self):
+        new_book = self.book_creator.create_new_book(**self.book_atributes)
+        self.assertEqual(new_book.manage_isbn, self.book_atributes['isbn'])
+        self.assertEqual(new_book.manage_title, self.book_atributes['title'])
+        self.assertEqual(new_book.manage_author_name, self.book_atributes['author_name'])
+        self.assertTrue(new_book.manage_availability)
 
 
 if __name__ == '__main__':

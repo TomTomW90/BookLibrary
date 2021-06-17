@@ -46,7 +46,7 @@ class UIBasic:
             raise NoAvailBook
         return available_books
 
-    def search_by_isbn(self, isbn_num: int) -> Book:
+    def search_by_isbn(self, isbn_num: int):
         try:
             isbn_num = Book.validate_isbn(isbn_num)
             return self.lib.books[isbn_num]

@@ -8,10 +8,10 @@ class Hire:
         self._hire_id = None
         self._hired_book_isbn = None
         self._hiring_users_id = None
-        self._start_date: d = None
+        self._start_date = None
         self._days_of_hire = None
-        self._expected_end_date: d = None
-        self._actual_end_date: d = None
+        self._expected_end_date = None
+        self._actual_end_date = None
 
     @property
     def hire_id(self) -> int:
